@@ -5,6 +5,7 @@ import com.example.learnspringbatch.repository.CustomerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
+import org.springframework.batch.core.configuration.support.DefaultBatchConfiguration;
 import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.step.builder.StepBuilder;
@@ -19,6 +20,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 
 @Configuration
@@ -88,8 +90,21 @@ public class SpringBatchConfig {
 
     @Bean
     public TaskExecutor taskExecutor() {
+        /*
         SimpleAsyncTaskExecutor taskExecutor = new SimpleAsyncTaskExecutor();
+        taskExecutor.setThreadNamePrefix("SIMPLE-TASK-");
         taskExecutor.setConcurrencyLimit(10);
+        return taskExecutor;
+
+         */
+
+        ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
+        taskExecutor.setThreadNamePrefix("SIMPLE-TASK-");
+        taskExecutor.setCorePoolSize(10);
+        taskExecutor.initialize();
+
+        taskExecutor.submit(()-> System.out.println("Simple task:: " + Thread.currentThread()));
+
         return taskExecutor;
     }
 }
