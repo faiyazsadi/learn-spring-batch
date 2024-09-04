@@ -1,14 +1,15 @@
 package com.example.learnspringbatch.controller.redis;
 
+import com.example.learnspringbatch.entity.redis.CustomerRedis;
 import com.example.learnspringbatch.service.redis.CustomerServiceRedis;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/redis")
+@RequestMapping("/redis/customer")
 public class RedisController {
 
     private final CustomerServiceRedis customerServiceRedis;
@@ -16,5 +17,15 @@ public class RedisController {
     @PostMapping("/create-customer")
     public void createUser() {
         customerServiceRedis.createAndSave();
+    }
+
+    @GetMapping("/info/{id}")
+    public CustomerRedis customerInfo(@PathVariable("id") Long id) {
+        return customerServiceRedis.findById(id);
+    }
+
+    @GetMapping("/info/all")
+    public List<CustomerRedis> customerInfoAll() {
+        return customerServiceRedis.findAll();
     }
 }

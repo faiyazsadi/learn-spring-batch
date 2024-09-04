@@ -6,11 +6,12 @@ import com.example.learnspringbatch.repository.redis.CustomerRepositoryRedis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class CustomerServiceRedis {
     private final CustomerRepositoryRedis customerRepositoryRedis;
-    private final CustomerServiceRedis customerServiceRedis;
 
     private static Long id = 0L;
 
@@ -23,6 +24,14 @@ public class CustomerServiceRedis {
         customer.setId(id++);
         customer.setFirstName("Mark");
         customer.setLastName("Feathers");
-        customerServiceRedis.save(customer);
+        customerRepositoryRedis.save(customer);
+    }
+
+    public CustomerRedis findById(Long id) {
+        return customerRepositoryRedis.findById(id).orElse(null);
+    }
+
+    public List<CustomerRedis> findAll() {
+        return (List<CustomerRedis>) customerRepositoryRedis.findAll();
     }
 }
