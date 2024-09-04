@@ -3,6 +3,7 @@ package com.example.learnspringbatch.controller;
 import com.example.learnspringbatch.config.ChunkEventListener;
 import com.example.learnspringbatch.config.CustomerJobExecutionListener;
 import com.example.learnspringbatch.service.ChunkService;
+import com.example.learnspringbatch.service.JobSchedulerService;
 import lombok.AllArgsConstructor;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -29,12 +30,14 @@ public class JobController {
     @Autowired
     @Qualifier("CustomJobLauncher")
     private JobLauncher jobLauncher;
+
     private Job job;
 
     private final ChunkEventListener chunkEventListener;
     private final ChunkService chunkService;
     private RestTemplate restTemplate;
     private CustomerJobExecutionListener customerJobExecutionListener;
+    private final JobSchedulerService jobSchedulerService;
 
     @PostMapping("/import")
     public void importCsvToDbJob() {
@@ -51,24 +54,7 @@ public class JobController {
 
     @PostMapping("/import-customers")
     public ResponseEntity<Long> importCsvToDBJob(@RequestBody String fileName) throws Exception {
-
-        // check if the file exists
-        Resource resource = new ClassPathResource(fileName);
-        if(!resource.exists()) {
-            throw new FileNotFoundException("File " + fileName + " Does Not Exist!");
-        }
-
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addString("fileName", fileName)
-                .addLong("startAt", System.currentTimeMillis()).toJobParameters();
-        try {
-            JobExecution jobExecution = jobLauncher.run(job, jobParameters);
-
-            return ResponseEntity.ok(jobExecution.getId());
-        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
-            e.printStackTrace();
-            return ResponseEntity.ok(0L);
-        }
+        return jobSchedulerService.importCustomers(fileName);
     }
 
     @PostMapping("/stress-test")
