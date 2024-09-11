@@ -25,6 +25,7 @@ public class CustomerServiceRedis {
         customer.setFirstName("Mark");
         customer.setLastName("Feathers");
         customerRepositoryRedis.save(customer);
+
     }
 
     public CustomerRedis findById(Long id) {

@@ -1,7 +1,7 @@
 package com.example.learnspringbatch.controller;
 
-import com.example.learnspringbatch.config.ChunkEventListener;
-import com.example.learnspringbatch.config.CustomerJobExecutionListener;
+import com.example.learnspringbatch.listener.ChunkEventListener;
+import com.example.learnspringbatch.listener.CustomerJobExecutionListener;
 import com.example.learnspringbatch.service.ChunkService;
 import com.example.learnspringbatch.service.JobSchedulerService;
 import lombok.AllArgsConstructor;
@@ -12,16 +12,12 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.FileNotFoundException;
 
 @RestController
 @RequestMapping("/jobs")

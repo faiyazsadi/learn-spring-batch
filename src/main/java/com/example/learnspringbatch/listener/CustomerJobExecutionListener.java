@@ -1,4 +1,4 @@
-package com.example.learnspringbatch.config;
+package com.example.learnspringbatch.listener;
 
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Stream;
 
@@ -26,7 +27,7 @@ public class CustomerJobExecutionListener implements JobExecutionListener {
     @Override
     public void beforeJob(JobExecution jobExecution) {
         String fileName = jobExecution.getJobParameters().getString("fileName");
-        Resource resource = new ClassPathResource(fileName);
+        Resource resource = new ClassPathResource(Objects.requireNonNullElse(fileName, "customers.csv"));
 
         if (!resource.exists()) {
             throw new FileNotFoundException(fileName);

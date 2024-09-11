@@ -1,4 +1,4 @@
-package com.example.learnspringbatch.config;
+package com.example.learnspringbatch.listener;
 
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.JobExecution;

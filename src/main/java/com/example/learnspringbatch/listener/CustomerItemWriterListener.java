@@ -1,4 +1,4 @@
-package com.example.learnspringbatch.config;
+package com.example.learnspringbatch.listener;
 
 import com.example.learnspringbatch.entity.Customer;
 import org.springframework.batch.core.ItemWriteListener;
